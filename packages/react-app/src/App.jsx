@@ -327,7 +327,7 @@ function App(props) {
       <Switch>
         <Route exact path="/">
           {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
-          <Home yourLocalBalance={yourLocalBalance} readContracts={readContracts} userSigner={userSigner} />
+          <Home userSigner={userSigner} />
         </Route>
         <Route exact path="/debug">
           {/*
@@ -335,7 +335,6 @@ function App(props) {
                 this <Contract/> component will automatically parse your ABI
                 and give you a form to interact with it locally
             */}
-
           <Contract
             name="YourContract"
             price={price}
