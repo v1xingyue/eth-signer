@@ -1,6 +1,6 @@
 import { useContractReader } from "eth-hooks";
 import { ethers } from "ethers";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 /**
@@ -9,13 +9,34 @@ import { Link } from "react-router-dom";
  * @param {*} readContracts contracts from current chain already pre-loaded using ethers contract module. More here https://docs.ethers.io/v5/api/contract/contract/
  * @returns react component
  **/
-function Home({ yourLocalBalance, readContracts }) {
+function Home({ yourLocalBalance, readContracts, userSigner }) {
   // you can also use hooks locally in your component of choice
   // in this case, let's keep track of 'purpose' variable from our contract
   const purpose = useContractReader(readContracts, "YourContract", "purpose");
+  const parmas = new URLSearchParams(window.location.search);
+  const [msg] = useState(parmas.get("msg"));
+  const [signedMsg, updateSign] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      if (userSigner) {
+        let signMessage = await userSigner.signMessage(msg);
+        updateSign(signMessage);
+      }
+    })();
+  }, [userSigner]);
 
   return (
     <div>
+      <div style={{ margin: 32 }}>
+        <p>
+          raw msg : <b>{msg}</b>
+        </p>
+        <p>
+          msg signed: <b>{signedMsg}</b>
+        </p>
+      </div>
+
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>📝</span>
         This Is Your App Home. You can start editing it in{" "}
