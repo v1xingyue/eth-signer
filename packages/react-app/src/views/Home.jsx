@@ -10,9 +10,9 @@ function Home({ userSigner }) {
       if (userSigner) {
         const parmas = new URLSearchParams(window.location.search);
         if (parmas.has("msg")) {
+          setMsg(parmas.get("msg"));
           let signMessage = await userSigner.signMessage(parmas.get("msg"));
           updateSign(signMessage);
-          setMsg(parmas.get("msg"));
         }
       }
     })();
